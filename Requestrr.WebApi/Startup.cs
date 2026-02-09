@@ -40,7 +40,11 @@ namespace Requestrr.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                });
             services.AddHttpClient();
 
             // In production, the React files will be served from this directory
@@ -90,6 +94,9 @@ namespace Requestrr.WebApi
             services.AddSingleton<AuthenticationSettingsProvider>();
             services.AddSingleton<RadarrSettingsProvider>();
             services.AddSingleton<SonarrSettingsProvider>();
+            services.AddSingleton<Requestrr.WebApi.Controllers.Logging.LoggingSettingsProvider>();
+            services.AddSingleton<Requestrr.WebApi.Controllers.Logging.LoggingSettingsRepository>();
+            services.AddSingleton<Requestrr.WebApi.RequestrrBot.Logging.IRequestLogger, Requestrr.WebApi.RequestrrBot.Logging.RequestLogger>();
             services.AddSingleton<RequestrrBot.ChatBot>();
         }
 

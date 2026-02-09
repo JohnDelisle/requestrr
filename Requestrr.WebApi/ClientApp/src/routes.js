@@ -20,6 +20,7 @@ import Settings from "./views/Settings.jsx";
 import ChatClients from "./views/ChatClients.jsx";
 import Movies from "./views/Movies.jsx";
 import TvShows from "./views/TvShows.jsx";
+import Logs from "./views/Logs.jsx";
 import Register from "./views/Register.jsx";
 import Login from "./views/Login.jsx";
 import Logout from "./views/Logout.jsx";
@@ -56,6 +57,14 @@ var routes = [
     component: <Account/>,
     layout: "/admin",
     supportsAnonymousUser: false
+  },
+  {
+    path: "/logs",
+    name: "Request Logs",
+    icon: "fas fa-list-alt text-info",
+    component: <Logs/>,
+    layout: "/admin",
+    supportsAnonymousUser: true
   },
   {
     path: "/settings",
