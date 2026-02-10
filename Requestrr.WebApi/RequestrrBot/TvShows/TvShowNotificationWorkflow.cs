@@ -46,7 +46,7 @@ namespace Requestrr.WebApi.RequestrrBot.TvShows
             }
         }
 
-        public async Task AddNotificationAsync(string userId, int theTvDbId, string seasonType, int seasonNumber)
+        public async Task<TvShow> AddNotificationAsync(string userId, int theTvDbId, string seasonType, int seasonNumber)
         {
             TvSeason selectedSeason;
 
@@ -69,6 +69,7 @@ namespace Requestrr.WebApi.RequestrrBot.TvShows
 
             _notificationsRepository.AddSeasonNotification(userId, theTvDbId, selectedSeason);
             await _userInterface.DisplayNotificationSuccessForSeasonAsync(tvShow, selectedSeason);
+            return tvShow;
         }
     }
 }

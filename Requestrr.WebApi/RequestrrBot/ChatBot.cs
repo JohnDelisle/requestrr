@@ -399,11 +399,14 @@ namespace Requestrr.WebApi.RequestrrBot
                         var userId = e.Id.Split("/").Skip(1).First();
                         var theMovieDbId = int.Parse(e.Id.Split("/").Last());
                         
-                        await CreateMovieNotificationWorkflow(e)
+                        var movie = await CreateMovieNotificationWorkflow(e)
                             .AddNotificationAsync(userId, theMovieDbId);
                         
                         // Log the notification subscription
-                        await _requestLogger.LogMovieNotificationAsync(e.User.Id.ToString(), e.User.Username, "Movie", theMovieDbId);
+                        if (movie != null)
+                        {
+                            await _requestLogger.LogMovieNotificationAsync(e.User.Id.ToString(), e.User.Username, movie.Title, theMovieDbId);
+                        }
                     }
                     else if (e.Id.ToLower().StartsWith("tr") || e.Id.ToLower().StartsWith("ts"))
                     {
@@ -421,11 +424,14 @@ namespace Requestrr.WebApi.RequestrrBot
                         var seasonType = splitValues[2];
                         var seasonNumber = splitValues[3];
 
-                        await CreateTvShowNotificationWorkflow(e)
+                        var tvShow = await CreateTvShowNotificationWorkflow(e)
                             .AddNotificationAsync(userId, tvDbId, seasonType, int.Parse(seasonNumber));
                         
                         // Log the notification subscription
-                        await _requestLogger.LogTvShowNotificationAsync(e.User.Id.ToString(), e.User.Username, "TVShow", tvDbId, $"{seasonType} Season {seasonNumber}");
+                        if (tvShow != null)
+                        {
+                            await _requestLogger.LogTvShowNotificationAsync(e.User.Id.ToString(), e.User.Username, tvShow.Title, tvDbId, $"{seasonType} Season {seasonNumber}");
+                        }
                     }
                     else if (e.Id.ToLower().StartsWith("mur"))
                     {
@@ -436,11 +442,14 @@ namespace Requestrr.WebApi.RequestrrBot
                         var userId = e.Id.Split("/").Skip(1).First();
                         var artistId = e.Id.Split("/").Last();
                         
-                        await CreateMusicNotificationWorkflow(e)
+                        var musicArtist = await CreateMusicNotificationWorkflow(e)
                             .AddNotificationArtistAsync(userId, artistId);
                         
                         // Log the notification subscription
-                        await _requestLogger.LogMusicNotificationAsync(e.User.Id.ToString(), e.User.Username, "Music", artistId);
+                        if (musicArtist != null)
+                        {
+                            await _requestLogger.LogMusicNotificationAsync(e.User.Id.ToString(), e.User.Username, musicArtist.ArtistName, artistId);
+                        }
                     }
                 }
             }
